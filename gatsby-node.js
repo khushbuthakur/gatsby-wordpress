@@ -13,7 +13,10 @@ const chunk = require(`lodash/chunk`)
  */
 exports.createPages = async gatsbyUtilities => {
   // Query our posts from the GraphQL server
-  const posts = await getPosts(gatsbyUtilities)
+
+  const pages = await getPages(gatsbyUtilities);
+  
+  const posts = await getPosts(gatsbyUtilities);
 
   // If there are no posts in WordPress, don't do anything
   if (!posts.length) {
@@ -129,6 +132,38 @@ async function createBlogPostArchive({ posts, gatsbyUtilities }) {
  * We're passing in the utilities we got from createPages.
  * So see https://www.gatsbyjs.com/docs/node-apis/#createPages for more info!
  */
+
+ async function getPages({ graphql, reporter }) {
+
+  const graphqlResult = await graphql(/* GraphQL */ `
+    query WpPages {
+      # Query all WordPress blog posts sorted by date
+      allWpPage {
+        edges {
+          # note: this is a GraphQL alias. It renames "node" to "post" for this query
+          # We're doing this because this "node" is a post! It makes our code more readable further down the line.
+          page: node {
+            id
+            uri
+            title
+          }
+        }
+      }
+    }
+  `);
+
+  if (graphqlResult.errors) {
+    reporter.panicOnBuild(
+      `There was an error loading your blog posts`,
+      graphqlResult.errors
+    )
+    return
+  }
+
+  
+  return graphqlResult.data.allWpPage.edges;
+ };
+
 async function getPosts({ graphql, reporter }) {
   const graphqlResult = await graphql(/* GraphQL */ `
     query WpPosts {

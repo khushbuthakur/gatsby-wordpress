@@ -7,3 +7,6 @@ import "./src/css/normalize.css"
 
 // custom CSS styles
 import "./src/css/style.css"
+
+// tailwind style
+import './src/styles/global.css'

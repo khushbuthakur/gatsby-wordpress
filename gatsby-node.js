@@ -16,6 +16,13 @@ exports.createPages = async gatsbyUtilities => {
 
   const pages = await getPages(gatsbyUtilities);
   
+
+  if(!pages.length){
+    return;
+  }
+
+  await createIndividualPages({pages, gatsbyUtilities});
+
   const posts = await getPosts(gatsbyUtilities);
 
   // If there are no posts in WordPress, don't do anything
@@ -24,11 +31,43 @@ exports.createPages = async gatsbyUtilities => {
   }
 
   // If there are posts, create pages for them
-  await createIndividualBlogPostPages({ posts, gatsbyUtilities })
+  await createIndividualBlogPostPages({ posts, gatsbyUtilities });
 
   // And a paginated archive
-  await createBlogPostArchive({ posts, gatsbyUtilities })
+  await createBlogPostArchive({ posts, gatsbyUtilities });
 }
+
+/**
+ * 
+ * create all pages
+ * */ 
+
+const createIndividualPages = async ({ pages, gatsbyUtilities }) =>
+ Promise.all(
+  pages.map(({ page }) =>
+     // createPage is an action passed to createPages
+     // See https://www.gatsbyjs.com/docs/actions#createPage for more info
+     gatsbyUtilities.actions.createPage({
+       // Use the WordPress uri as the Gatsby page path
+       // This is a good idea so that internal links and menus work 👍
+       path: page.uri,
+
+       // use the blog post template as the page component
+       component: path.resolve(`./src/templates/page-layout.js`),
+
+       // `context` is available in the template as a prop and
+       // as a variable in GraphQL.
+       context: {
+         // we need to add the page id here
+         // so our template knows which page
+         // the current page is (when you open it in a browser)
+         id: page.id,
+         title : page.title
+         // We also use the next and previous id's to query them and add links!
+       },
+     })
+   )
+ )
 
 /**
  * This function creates all the individual blog pages in this site

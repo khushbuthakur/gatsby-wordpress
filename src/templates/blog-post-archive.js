@@ -33,9 +33,9 @@ const BlogIndex = ({
 
       {/* <Bio /> */}
       <Hero/>
-
+        <h3 className="text-2xl text-center mt-4 font-bold">Blogs</h3>
       {/* <ol style={{ listStyle: `none` }}> */}
-      <div className="container py-20 font-sans text-gray-900">
+      <div className="container py-2 font-sans text-gray-900">
         <div className="mt-6 flex flex-row">
           {posts.map(post => {
             const title = post.title

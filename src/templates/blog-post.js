@@ -14,7 +14,7 @@ import "../css/@wordpress/block-library/build-style/theme.css"
 import Bio from "../components/bio"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
-import Hero from "../components/Hero"
+// import Hero from "../components/Hero"
 
 const BlogPostTemplate = ({ data: { previous, next, post } }) => {
   const featuredImage = {
@@ -25,7 +25,6 @@ const BlogPostTemplate = ({ data: { previous, next, post } }) => {
   return (
     <Layout>
       <Seo title={post.title} description={post.excerpt} />
-      <Hero/>
       <article
         className="blog-post"
         itemScope

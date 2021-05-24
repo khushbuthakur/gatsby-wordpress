@@ -5,14 +5,14 @@ import { Link, graphql } from "gatsby"
 function BlogCard({title, date, excerpt, uri}) {
     return (
         <div 
-            class="shadow-sm max-w-xs w-full px-6 py-8 text-black bg-white"
+            className="shadow-sm max-w-full w-full px-6 py-8 text-black bg-white space-y-2 m-2"
             itemScope
             itemType="http://schema.org/Article"
         >
-            <h2 class="text-lg">{parse(title)}</h2>
+            <h2 className="text-lg">{parse(title)}</h2>
 
-            <div class="flex space-x-2 items-center">
-                    {/* <i data-feather="calendar" class="w-4 h-4"></i> */}
+            <div className="flex space-x-2 items-center">
+                    {/* <i data-feather="calendar" className="w-4 h-4"></i> */}
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
@@ -30,12 +30,12 @@ function BlogCard({title, date, excerpt, uri}) {
                         <path d="M8 2L8 6"></path>
                         <path d="M3 10L21 10"></path>
                     </svg>
-                    <p class="text-sm font-bold">{date}</p>
+                    <p className="text-sm font-bold">{date}</p>
             </div>
 
-            <p class="mt-2 text-sm">{parse(excerpt)}</p>
-            <div class="mt-8 flex items-center">
-            <Link to={uri} itemProp="url" class="btn btn-sm text-white bg-red-600 hover:bg-red-800">
+            <p className="mt-2 text-sm">{parse(excerpt)}</p>
+            <div className="mt-8 flex items-center">
+            <Link to={uri} itemProp="url" className="btn btn-sm text-white bg-red-600 hover:bg-red-800">
                 View
             </Link>
             </div>

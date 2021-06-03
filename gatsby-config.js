@@ -51,9 +51,9 @@ module.exports = {
      * See https://www.gatsbyjs.com/docs/gatsby-image/#setting-up-gatsby-image
      * if you're curious about it.
      */
+     `gatsby-theme-wordpress-gutenberg`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
-
     {
       // See https://www.gatsbyjs.com/plugins/gatsby-plugin-manifest/?=gatsby-plugin-manifest
       resolve: `gatsby-plugin-manifest`,

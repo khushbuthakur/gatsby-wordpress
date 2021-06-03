@@ -22,6 +22,13 @@ const BlogPostTemplate = ({ data: { previous, next, post } }) => {
     alt: post.featuredImage?.node?.alt || ``,
   }
 
+  const favouriteImage = {
+    fluid: post.acfDemoFields?.favouriteImage?.localFile?.childImageSharp?.fluid,
+    alt: post.acfDemoFields?.favouriteImage?.altText || ``,
+  }
+
+  console.log({favouriteImage});
+
   return (
     <Layout>
       <Seo title={post.title} description={post.excerpt} />
@@ -45,8 +52,39 @@ const BlogPostTemplate = ({ data: { previous, next, post } }) => {
           )}
         </header>
 
+        {/* rendering blocks */}
+
+        {/* During fast refreshing of new content, there can be situations when the 
+        Blocks component can resolve to null, 
+        so you need to also make checks for this situation in your code. */}
+
+        {/* {post.Blocks && <post.Blocks />} */}
+
         {!!post.content && (
           <section itemProp="articleBody">{parse(post.content)}</section>
+        )}
+
+        <br/>
+
+        {!!post.acfDemoFields && !!post.acfDemoFields.justATextField && (
+          <React.Fragment>
+
+          <h3> ACF TEXT AREA FIELD :  {parse(post.acfDemoFields.justATextField)}</h3>
+
+          <br/>
+          <br/>
+          <br/>
+
+          {favouriteImage?.fluid && (
+            <Image
+              fluid={favouriteImage.fluid}
+              alt={favouriteImage.alt}
+              style={{ marginBottom: 50 }}
+            />
+          )}
+          
+          </React.Fragment>
+          
         )}
 
         <hr />
@@ -99,8 +137,25 @@ export const pageQuery = graphql`
     # selecting the current post by id
     post: wpPost(id: { eq: $id }) {
       id
+      acfDemoFields{
+        fieldGroupName
+        justATextField
+        textarea
+        favouriteImage {
+          altText
+          localFile {
+            childImageSharp {
+              fluid(maxWidth: 1000, quality: 100) {
+                ...GatsbyImageSharpFluid_tracedSVG
+              }
+            }
+          }
+          sourceUrl
+        }
+      }
       excerpt
       content
+      #Blocks
       title
       date(formatString: "MMMM DD, YYYY")
 
